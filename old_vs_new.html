@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Hello SyntaxHighlighter</title>
+  <script type="text/javascript" src="scripts/shCore.js"></script>
+  <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+  <script type="text/javascript" src="scripts/shBrushPhp.js"></script>
+  <script type="text/javascript" src="scripts/shBrushXml.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script   src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+  <link type="text/css" rel="stylesheet" href="styles/shCoreDefault.css"/>
+  <!-- <script type="text/javascript" src="js/xreg.js"></script> -->
+  <script type="text/javascript">
+  SyntaxHighlighter.config.bloggerMode = true;
+  SyntaxHighlighter.defaults['toolbar'] = false;
+    SyntaxHighlighter.all();
+  </script>
+</head>
+
+<body style="background: white; font-family: Helvetica">
+<a href="./index.html">Back</a>
+<table>
+  <thead>
+    <tr>
+      <td><h1>Old Way</h1></td>
+      <td><h1>New Way</h1></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        HTML
+        <pre class="brush: php; html-script: true">
+          &lt;html&gt;
+            &lt;body&gt;
+              <div id="user-list">
+              </div>
+            &lt;/body&gt;
+          &lt;/html&gt;
+        </pre>
+        Client-side template
+        <pre class="brush: php; html-script: true">
+          <script id="users-template" type="text/x-handlebars-template">
+            <div>
+              <span>{{name}}</span> -
+              <span>{{email}}</span>
+            </div>
+          </script>
+        </pre>
+        Script
+        <pre class="brush: js;">
+          $.get("https://jsonplaceholder.typicode.com/users", function(response) {
+            var source = $("#users-template").html();
+            var template = Handlebars.compile(source);
+            $.each(response, function() {
+              var html = template(this);
+              $("#user-list").append(html);
+            });
+          });
+        </pre>
+      </td>
+      <td>
+        HTML
+        <pre class="brush: php; html-script: true">
+          &lt;html ng-app&gt;
+            &lt;body&gt;
+              <div ng-controller="UserController">
+                <div ng-repeat="user in users">
+                  <span>{{user.name}}</span> -
+                  <span>{{user.email}}</span>
+                </div>
+              </div>
+            &lt;/body&gt;
+          &lt;/html&gt;
+        </pre>
+        Script
+        <pre class="brush: js">
+          function UserController($scope, $http) {
+            $http.get("https://jsonplaceholder.typicode.com/users").success(function(response) {
+              $scope.users = response;
+            });
+          }
+        </pre>
+      </td>
+    </tr>
+    <tr>
+      <td><h2>Result</h2></td>
+      <td><h2>Result</h2></td>
+    </tr>
+    <br>
+    <tr>
+      <td>
+        <div id="user-list">
+        </div>
+        <script id="users-template" type="text/x-handlebars-template">
+          <div>
+            <span>{{name}}</span> -
+            <span>{{email}}</span>
+          </div>
+        </script>
+        <script type="text/javascript">
+          $.get("https://jsonplaceholder.typicode.com/users", function(response) {
+            var source = $("#users-template").html();
+            var template = Handlebars.compile(source);
+            $.each(response, function() {
+              var html = template(this);
+              $("#user-list").append(html);
+            });
+          });
+        </script>
+      </td>
+      <td>
+        <script type="text/javascript">
+          angular.module('myApp', []);
+          angular.module('myApp').controller('UserController', function UserController($scope, $http) {
+            $http.get("https://jsonplaceholder.typicode.com/users").success(function(response) {
+              $scope.users = response;
+            });
+          })
+        </script>
+        <div ng-app='myApp'>
+        <div ng-controller="UserController">
+          <div ng-repeat="user in users">
+            <span>{{user.name}}</span> -
+            <span>{{user.email}}</span>
+          </div>
+        </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</html>
