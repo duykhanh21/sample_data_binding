@@ -18,8 +18,34 @@
     SyntaxHighlighter.all();
   </script>
 </head>
+<script type="text/javascript">
+  var myApp = angular.module('myApp', []);
+  myApp.controller('DemoController',['$scope','$rootScope', function($scope, $rootScope) {
+    var that = $scope;
+    console.log($scope.$$watchers);
+    $scope.numberA = 1;
+    rootEle = document.querySelector("fieldset");
+    ele = angular.element(rootEle)
+    console.log(ele.scope().$$watchers)
+    // $scope.numbers = [1,2,3]
+    $scope.increaseA = function(){
+      $scope.numberA = (parseInt($scope.numberA) || 0) + 1
+    }
+    // console.log($scope.$$watchers);
+    // $scope.$watch('numberA', function(a){
+    //   console.log(a)
+    // })
+  }]);
+</script>
 
-<body style="background: white; font-family: Helvetica">
-<a href="./index.html">Back</a>
+<body ng-app="myApp" style="background: white; font-family: Helvetica">
+<div><a href="./index.html">Back</a></div>
+<fieldset ng-controller="DemoController">
+  <!-- <div>Number A: <span ng-bind="numberA"></span></div> -->
+  <div>Number A: <input ng-model="numberA"></span></div>
+  <!-- <div ng-repeat='x in numbers' ng-bind='x'></div> -->
+  <hr>
+  <span><button ng-click="increaseA()">Increase A</button></span>
+</fieldset>
 </body>
 </html>
